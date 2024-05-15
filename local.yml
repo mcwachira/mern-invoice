@@ -1,4 +1,4 @@
-version:    "3.9"
+version: "3.9"
 
 services:
     api:
@@ -7,15 +7,16 @@ services:
             context: .
             dockerfile: ./docker/local/express/Dockerfile
         volumes:
-            -   /app/node_modules
-            -   .:/app
+            - /app/node_modules
+            - .:/app
         depends_on:
-            -   mongodb
+            - mongodb
         ports:
-            -  "1997:1997"
+            - "1997:1997"
         environment:
             NODE_ENV: ${NODE_ENV}
             MONGO_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb
+            FORCE_COLOR: 1
         networks:
             - invoice
     
@@ -23,12 +24,12 @@ services:
         image: mongo:7.0.9-jammy
         restart: always
         ports:
-            -   "27017:27017"
+            - "27017:27017"
         environment:
-                MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
-                MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+            MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
         volumes:
-            -   mongodb-data:/data/db
+            - mongodb-data:/data/db
         networks:
             - invoice
             
@@ -36,7 +37,7 @@ services:
     mongo-express:
         image: mongo-express:1.0-18
         depends_on:
-            -   mongodb
+            - mongodb
         restart: always
         ports:
             - "8081:8081"

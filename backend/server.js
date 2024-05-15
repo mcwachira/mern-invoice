@@ -2,6 +2,7 @@ import express from "express"
 import chalk from "chalk";
 import morgan from "morgan"
 import cookieParser from "cookie-parser"
+import {morganMiddleware, systemLogs} from "./utils/Logger.js";
 
 const app = express();
 
@@ -17,6 +18,8 @@ app.use(express.urlencoded({extended: false}))
 
 app.use(cookieParser())
 
+app.use(morganMiddleware)
+
 app.get("/api/v1/test", (req, res) => {
     console.log('hello world')
 })
@@ -24,6 +27,8 @@ app.get("/api/v1/test", (req, res) => {
 const PORT = process.env.PORT || 1997;
 
 app.listen(PORT, () => {
-    console.log(`${chalk.green.bold("Server  running in ")} ${chalk.yellow.bold(process.env.NODE_ENV)} mode on port  ${chalk.blue.bold(PORT)}`)
-})
 
+    console.log(`${chalk.green.bold("Server  running in ")} ${chalk.yellow.bold(process.env.NODE_ENV)} mode on port  ${chalk.blue.bold(PORT)}`)
+
+    systemLogs.info(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+})
