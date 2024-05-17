@@ -11,3 +11,6 @@ const App = (props) => {
  );}
 
 export default App;
+
+
+WDS_SOCKET_PORT=0
