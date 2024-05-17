@@ -3,7 +3,9 @@ import chalk from "chalk";
 import morgan from "morgan"
 import cookieParser from "cookie-parser"
 import {morganMiddleware, systemLogs} from "./utils/Logger.js";
+import connectionToDb from './config/connectDb.js'
 
+await connectionToDb()
 const app = express();
 
 
@@ -21,7 +23,7 @@ app.use(cookieParser())
 app.use(morganMiddleware)
 
 app.get("/api/v1/test", (req, res) => {
-    console.log('hello world')
+    console.log('hello to me ')
 })
 
 const PORT = process.env.PORT || 1997;
