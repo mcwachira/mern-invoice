@@ -1,0 +1,37 @@
+# Ignore node_modules everywhere (don't copy local dependencies)
+**/node_modules
+
+# Ignore build output
+**/dist
+**/.next
+
+# Ignore git files and metadata
+.git
+.gitignore
+
+# Ignore IDE/editor configs
+.vscode
+.idea
+*.log
+
+# Ignore local environment files
+.env
+.env.local
+.env.*.local
+
+# Ignore Docker files except the Dockerfile itself if inside the root (optional)
+docker
+
+# Ignore coverage reports
+coverage
+
+# Ignore npm logs
+npm-debug.log*
+pnpm-debug.log*
+
+# Ignore yarn cache if present
+.yarn/cache
+
+# Ignore system files
+.DS_Store
+Thumbs.db

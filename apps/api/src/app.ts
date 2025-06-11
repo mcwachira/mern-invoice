@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import cookieParser from "cookie-parser";
 import express, { Request, Response } from "express";
 import morgan from "morgan";
@@ -19,5 +20,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(
+    `${chalk.green.bold(`Server running at http://localhost:${port}`)}`,
+  );
 });
