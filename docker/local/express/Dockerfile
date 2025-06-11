@@ -17,26 +17,29 @@ WORKDIR /app
 RUN addgroup --system invoice \
     && adduser --system --ingroup invoice invoice
 
-# Copy monorepo root config
+
+# Copy monorepo root files
 COPY ../../pnpm-workspace.yaml ./
 COPY ../../package.json ./
+COPY ../../pnpm-lock.yaml ./
+COPY ../../.npmrc ./
 
-# Copy API package.json
+ # Copy only necessary packages (install step)
 COPY ../../apps/api/package.json ./apps/api/
 
-# Install dependencies only for the API
-RUN pnpm install --filter ./apps/api...
+# Install only the workspace dependencies
+RUN pnpm install --frozen-lockfile
 
-# Copy full source code (can optimize with .dockerignore)
+# Copy full source (after install step to benefit from Docker layer caching)
 COPY --chown=invoice:invoice ../../ ./
 
-# Set correct permissions for running as non-root
+# Set permissions
 RUN chown -R invoice:invoice /app
 
 USER invoice
 
-# Set working directory to API subfolder
+# Enter the API directory
 WORKDIR /app/apps/api
 
-# Run in dev mode
-CMD ["pnpm","run", "dev"]
+# Start dev script
+CMD ["pnpm", "run", "dev"]
