@@ -5,7 +5,7 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: ./docker/local/express/Dockerfile
+      dockerfile: ./docker/api/local/express/Dockerfile
     volumes:
       - /app/node_modules
       - .:/app
