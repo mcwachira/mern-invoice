@@ -4,6 +4,7 @@ import express, { Request, Response } from "express";
 import morgan from "morgan";
 import { morganMiddleware, systemLogs } from "./utils/logger";
 import connectionToDb from "./config/connectDB";
+import { errorHandler, notFound } from "./middleware/errorMiddleware";
 
 (async () => {
   await connectionToDb();
@@ -22,22 +23,12 @@ app.use(cookieParser());
 
 app.use(morganMiddleware);
 
-// Handle both with and without trailing slash
-app.get("/api/v1", (req: Request, res: Response) => {
-  res.json({ message: "API is working", status: "success" });
-});
-
-app.get("/api/v1/", (req: Request, res: Response) => {
-  res.json({ message: "API is working", status: "success" });
-});
-
 app.get("/api/v1/test", (req, res) => {
   res.json({ message: "Test endpoint working", status: "success" });
 });
 
-app.get("/make", (req: Request, res: Response) => {
-  res.send("Hello from Express with TypeScript!");
-});
+app.use(notFound); // 404 middleware
+app.use(errorHandler); // error handler (must be last)
 
 app.listen(PORT, () => {
   console.log(
