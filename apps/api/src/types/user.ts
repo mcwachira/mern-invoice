@@ -17,7 +17,7 @@ export interface IUser {
   address?: string;
   city?: string;
   country?: string;
-  passwordChangedAt?: date;
+  passwordChangedAt?: Date;
   roles: string[];
   active: boolean;
   refreshToken: string[];
