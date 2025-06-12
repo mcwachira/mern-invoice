@@ -1,7 +1,7 @@
 import "dotenv/config";
-import nodemailer from "nodemailer";
+import nodemailer, { Transporter } from "nodemailer";
 
-let transporter;
+let transporter: Transporter;
 
 if (process.env.NODE_ENV === "development") {
   transporter = nodemailer.createTransport({
@@ -10,7 +10,13 @@ if (process.env.NODE_ENV === "development") {
   });
 } else if (process.env.NODE_ENV === "production") {
   transporter = nodemailer.createTransport({
-    //setup mailgun in prod
+    // Setup for production (e.g., Mailgun, SMTP, etc.)
+    host: process.env.MAIL_HOST!,
+    port: Number(process.env.MAIL_PORT!),
+    auth: {
+      user: process.env.MAIL_USER!,
+      pass: process.env.MAIL_PASS!,
+    },
   });
 }
 
