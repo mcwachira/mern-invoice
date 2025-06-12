@@ -17,7 +17,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(morganMiddleware);
 
-app.get("/", (req: Request, res: Response) => {
+// Handle both with and without trailing slash
+app.get("/api/v1", (req: Request, res: Response) => {
+  res.json({ message: "API is working", status: "success" });
+});
+
+app.get("/api/v1/", (req: Request, res: Response) => {
+  res.json({ message: "API is working", status: "success" });
+});
+
+app.get("/api/v1/test", (req, res) => {
+  res.json({ message: "Test endpoint working", status: "success" });
+});
+
+app.get("/make", (req: Request, res: Response) => {
   res.send("Hello from Express with TypeScript!");
 });
 

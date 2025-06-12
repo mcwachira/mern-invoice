@@ -12,8 +12,8 @@ services:
     depends_on:
       - mongodb
       - redis
-    ports:
-      - "1997:1997"
+    # ports:
+    #   - "1997:1997"
     env_file:
       - ./apps/api/.env
     environment:
@@ -21,6 +21,17 @@ services:
       MONGO_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb
       REDIS_HOST: redis
       REDIS_PORT: 6379
+    networks:
+      - invoice
+
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/web/local/nextjs/Dockerfile
+    restart: on-failure
+    volumes:
+      - .:/app
+      - /app/node_modules
     networks:
       - invoice
 
@@ -71,6 +82,22 @@ services:
     networks:
       - invoice
 
+  nginx:
+    build:
+      context: ./docker/api/local/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    restart: always
+    depends_on:
+      - api
+    volumes:
+      - static_volume:/app/staticfiles
+      - pdf_volume:/app/docs
+
+    networks:
+      - invoice
+
 networks:
   invoice:
     driver: bridge
@@ -78,3 +105,5 @@ networks:
 volumes:
   mongodb-data:
   redis-data:
+  static_volume:
+  pdf_volume:

@@ -20,12 +20,12 @@ COPY ../../apps/web/package.json ./apps/web/
 # Install only the workspace dependencies
 RUN pnpm install --filter ./apps/web...
 
-# Copy full source (after install step to benefit from Docker layer caching)
-COPY . .
+# Copy entire monorepo source
+COPY ../../ ./
 
 
 # Enter the web directory
-WORKDIR /app/apps/api
+WORKDIR /app/apps/web
 
 # Start dev script
 CMD ["pnpm", "run", "dev"]
