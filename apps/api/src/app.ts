@@ -3,7 +3,11 @@ import cookieParser from "cookie-parser";
 import express, { Request, Response } from "express";
 import morgan from "morgan";
 import { morganMiddleware, systemLogs } from "./utils/logger";
+import connectionToDb from "./config/connectDB";
 
+(async () => {
+  await connectionToDb();
+})();
 const app = express();
 const PORT = process.env.PORT || 1997;
 
@@ -15,6 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
+
 app.use(morganMiddleware);
 
 // Handle both with and without trailing slash
