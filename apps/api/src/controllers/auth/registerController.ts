@@ -60,6 +60,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const verificationToken = crypto.randomBytes(32).toString("hex");
+  console.log(verificationToken);
 
   const emailVerificationToken = await new VerificationToken({
     _userId: registeredUser._id,

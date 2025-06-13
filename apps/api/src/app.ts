@@ -1,4 +1,6 @@
 import chalk from "chalk";
+import dotenv from "dotenv";
+dotenv.config();
 import cookieParser from "cookie-parser";
 import express from "express";
 import morgan from "morgan";
@@ -27,6 +29,8 @@ app.use(cookieParser());
 // app.use(expressMongoSanitize());
 
 app.use(morganMiddleware);
+
+app.set("trust proxy", 1);
 
 app.get("/api/v1/make", (req, res) => {
   res.json({ message: "Test endpoint working", status: "success" });
