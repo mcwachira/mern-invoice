@@ -7,6 +7,10 @@ import crypto from "crypto";
 
 const domainURL = process.env.DOMAIN;
 
+// $-title   Register User and send email verification link
+// $-path    POST /api/v1/auth/register
+// $-auth    Public
+
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, username, firstName, lastName, password, passwordConfirm } =
     req.body;
