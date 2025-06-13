@@ -7,7 +7,7 @@ import crypto from "crypto";
 import { HydratedDocument } from "mongoose";
 import { IUser } from "../../types/user";
 
-const domainURL = process.env.DOMAIN;
+const domainURL = process.env.DOMAIN_URL || "http://localhost:8080";
 
 // $-title   Resend Email VerificationToken
 // $-path    POST /api/v1/auth/resend_email_token

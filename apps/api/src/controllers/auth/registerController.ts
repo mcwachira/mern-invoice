@@ -5,7 +5,7 @@ import VerificationToken from "../../models/verifyResetTokenModel";
 import sendEmail from "../../utils/sendEmail";
 import crypto from "crypto";
 
-const domainURL = process.env.DOMAIN;
+const domainURL = process.env.DOMAIN_URL || "http://localhost:8080";
 
 // $-title   Register User and send email verification link
 // $-path    POST /api/v1/auth/register
@@ -72,13 +72,15 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
   }).save();
 
   const emailLink = `${domainURL}/api/v1/auth/verify/${emailVerificationToken.token}/${registeredUser._id}`;
+  console.log("email link", emailLink);
 
   const payload = {
     name: registeredUser.firstName,
     link: emailLink,
   };
+  console.log("the payload", payload);
 
-  console.log("iser registered email", registeredUser.email);
+  // console.log("iser registered email", registeredUser.email);
   await sendEmail(
     registeredUser.email,
     "Account Verification",

@@ -15,7 +15,9 @@ import authRoutes from "./routes/authRoutes";
 })();
 const app = express();
 const PORT = process.env.PORT;
-// console.log(PORT);
+
+const domainURL = process.env.DOMAIN;
+console.log(domainURL);
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
