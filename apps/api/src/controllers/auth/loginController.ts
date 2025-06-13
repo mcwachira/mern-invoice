@@ -3,8 +3,6 @@ import jwt from "jsonwebtoken";
 import { CookieOptions } from "express";
 import { systemLogs } from "../../utils/logger";
 import User from "../../models/userModel";
-// import dotenv from "dotenv";
-// dotenv.config();
 
 // $-title   Login User, get access and refresh tokens
 // $-path    POST /api/v1/auth/login
