@@ -1,7 +1,7 @@
 import "dotenv/config";
 import nodemailer, { Transporter } from "nodemailer";
 
-let transporter: Transporter;
+let transporter: Transporter | undefined;
 
 if (process.env.NODE_ENV === "development") {
   transporter = nodemailer.createTransport({
