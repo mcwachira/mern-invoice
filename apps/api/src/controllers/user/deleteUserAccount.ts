@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import User from "../../models/userModel";
 
 // $-title   delete User account
-// $-path    Patch /api/v1/user/profile/
+// $-path    delete /api/v1/user/id
 // $-auth    Private/Admin
 // an admin user can delete any other user account
 

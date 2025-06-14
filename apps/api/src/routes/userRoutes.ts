@@ -6,6 +6,7 @@ import deleteMyAccount from "../controllers/user/deleteMyAccount";
 import role from "../middleware/roleMiddlware";
 import getAllUserAccounts from "../controllers/user/getAllUserAccounts";
 import deleteUserAccount from "../controllers/user/deleteUserAccount";
+import deactivateUserAcount from "../controllers/user/deactivateUserAccount";
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ router
   .get(checkAuth, role.checkRoles(role.ROLES.Admin), getAllUserAccounts);
 router
   .route("/:id")
+  .patch(checkAuth, role.checkRoles(role.ROLES.Admin), deactivateUserAcount)
   .delete(checkAuth, role.checkRoles(role.ROLES.Admin), deleteUserAccount);
 export default router;
