@@ -8,6 +8,8 @@ import { morganMiddleware, systemLogs } from "./utils/logger";
 import connectionToDb from "./config/connectDB";
 import { errorHandler, notFound } from "./middleware/errorMiddleware";
 import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
+import { apiLimiter } from "./middleware/apiLimiter";
 // import expressMongoSanitize from "@exortek/express-mongo-sanitize";
 
 (async () => {
@@ -39,6 +41,7 @@ app.get("/api/v1/make", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/user", apiLimiter, userRoutes);
 
 app.use(notFound); // 404 middleware
 app.use(errorHandler); // error handler (must be last)
