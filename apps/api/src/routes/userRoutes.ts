@@ -21,6 +21,9 @@ router
   .get(checkAuth, role.checkRoles(role.ROLES.Admin), getAllUserAccounts);
 router
   .route("/:id")
-  .patch(checkAuth, role.checkRoles(role.ROLES.Admin), deactivateUserAcount)
   .delete(checkAuth, role.checkRoles(role.ROLES.Admin), deleteUserAccount);
+
+router
+  .route("/:id/deactivate")
+  .patch(checkAuth, role.checkRoles(role.ROLES.Admin), deactivateUserAcount);
 export default router;
