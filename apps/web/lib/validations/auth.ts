@@ -5,7 +5,7 @@ export type FormState =
         name?: string;
         email?: string;
         password?: string[];
-        confirmPassword?: string[];
+        passwordConfirm?: string[];
       };
       message?: string;
     }
@@ -25,7 +25,18 @@ export const loginSchema = z.object({
 
 export const signUpSchema = z
   .object({
-    name: z
+    firstName: z
+      .string()
+      .min(1, "Full Name is required")
+      .min(3, "Nmae must be atleast 3 characters long")
+      .max(50, "Name must be less than 50 characters"),
+
+    lastName: z
+      .string()
+      .min(1, "Full Name is required")
+      .min(3, "Nmae must be atleast 3 characters long")
+      .max(50, "Name must be less than 50 characters"),
+    username: z
       .string()
       .min(1, "Full Name is required")
       .min(3, "Nmae must be atleast 3 characters long")
@@ -42,11 +53,11 @@ export const signUpSchema = z
       .min(6, "Password must be at least 8 characters long")
       .max(100, "Password must be less than than 100 characters"),
 
-    confirmPassword: z.string().min(1, "please confirm your password"),
+    passwordConfirm: z.string().min(1, "please confirm your password"),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.passwordConfirm, {
     message: "Password don't match",
-    path: ["confirmPassword"],
+    path: ["passwordConfirm"],
   });
 
 export const forgotPasswordSchema = z.object({

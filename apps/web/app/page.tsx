@@ -21,7 +21,7 @@ const Home = () => {
           variant="default"
           size="lg"
           className="text-2xl px-8 py-4 rounded-full bg-green-600 hover:bg-green-700"
-          onClick={() => router.push("/register")}
+          onClick={() => router.push("/auth/register")}
         >
           Create Account
         </Button>

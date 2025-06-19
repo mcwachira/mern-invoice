@@ -75,10 +75,12 @@ const SignUpForm = () => {
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
+      username: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      passwordConfirm: "",
     },
   });
 
@@ -120,36 +122,114 @@ const SignUpForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        {/* Full Name Field */}
+        {/* First Name Field */}
         <FormField
           control={form.control}
-          name="name"
+          name="firstName"
           render={({ field }) => (
             <FormItem className="space-y-2">
               <FormLabel className="text-sm font-medium text-gray-700 flex items-center gap-2">
                 <User className="w-4 h-4 text-purple-500" />
-                Full Name
+                First Name
               </FormLabel>
               <FormControl>
                 <div className="relative group">
                   <Input
-                    placeholder="Enter your full name"
-                    className={`pl-12 pr-4 py-3 border-2 rounded-xl transition-all duration-300 ${
-                      focusedField === "name"
-                        ? "border-purple-500 shadow-lg shadow-purple-500/20 bg-purple-50/50"
+                    placeholder="Enter your first name"
+                    className={`pl-12 pr-4 py-3 border-2 text-black bg-white rounded-xl transition-all duration-300 ${
+                      focusedField === "firstName"
+                        ? "border-purple-500 shadow-lg shadow-purple-500/20"
                         : "border-gray-200 hover:border-purple-300"
-                    } ${form.formState.errors.name ? "border-red-500" : ""}`}
-                    onFocus={() => setFocusedField("name")}
+                    } ${form.formState.errors.firstName ? "border-red-500" : ""}`}
+                    onFocus={() => setFocusedField("firstName")}
                     {...field}
                   />
                   <User
                     className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors ${
-                      focusedField === "name"
+                      focusedField === "firstName"
                         ? "text-purple-500"
                         : "text-gray-400"
                     }`}
                   />
-                  {field.value && !form.formState.errors.name && (
+                  {field.value && !form.formState.errors.firstName && (
+                    <CheckCircle className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage className="text-red-500 text-xs" />
+            </FormItem>
+          )}
+        />
+
+        {/* Last Name Field */}
+        <FormField
+          control={form.control}
+          name="lastName"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <User className="w-4 h-4 text-purple-500" />
+                Last Name
+              </FormLabel>
+              <FormControl>
+                <div className="relative group">
+                  <Input
+                    placeholder="Enter your last name"
+                    className={`pl-12 pr-4 py-3 border-2 text-black bg-white rounded-xl transition-all duration-300 ${
+                      focusedField === "lastName"
+                        ? "border-purple-500 shadow-lg shadow-purple-500/20"
+                        : "border-gray-200 hover:border-purple-300"
+                    } ${form.formState.errors.lastName ? "border-red-500" : ""}`}
+                    onFocus={() => setFocusedField("lastName")}
+                    {...field}
+                  />
+                  <User
+                    className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors ${
+                      focusedField === "lastName"
+                        ? "text-purple-500"
+                        : "text-gray-400"
+                    }`}
+                  />
+                  {field.value && !form.formState.errors.lastName && (
+                    <CheckCircle className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage className="text-red-500 text-xs" />
+            </FormItem>
+          )}
+        />
+
+        {/* Username Field */}
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <User className="w-4 h-4 text-purple-500" />
+                Username
+              </FormLabel>
+              <FormControl>
+                <div className="relative group">
+                  <Input
+                    placeholder="Choose a unique username"
+                    className={`pl-12 pr-4 py-3 border-2 text-black bg-white rounded-xl transition-all duration-300 ${
+                      focusedField === "username"
+                        ? "border-purple-500 shadow-lg shadow-purple-500/20"
+                        : "border-gray-200 hover:border-purple-300"
+                    } ${form.formState.errors.username ? "border-red-500" : ""}`}
+                    onFocus={() => setFocusedField("username")}
+                    {...field}
+                  />
+                  <User
+                    className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors ${
+                      focusedField === "username"
+                        ? "text-purple-500"
+                        : "text-gray-400"
+                    }`}
+                  />
+                  {field.value && !form.formState.errors.username && (
                     <CheckCircle className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
                   )}
                 </div>
@@ -174,7 +254,7 @@ const SignUpForm = () => {
                   <Input
                     type="email"
                     placeholder="your.email@example.com"
-                    className={`pl-12 pr-4 py-3 border-2 rounded-xl transition-all duration-300 ${
+                    className={`pl-12 pr-4 py-3 border-2 text-black bg-white rounded-xl transition-all duration-300 ${
                       focusedField === "email"
                         ? "border-purple-500 shadow-lg shadow-purple-500/20 bg-purple-50/50"
                         : "border-gray-200 hover:border-purple-300"
@@ -214,7 +294,7 @@ const SignUpForm = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Create a strong password"
-                    className={`pl-12 pr-16 py-3 border-2 rounded-xl transition-all duration-300 ${
+                    className={`pl-12 pr-16 py-3 border-2 text-black bg-white rounded-xl transition-all duration-300 ${
                       focusedField === "password"
                         ? "border-purple-500 shadow-lg shadow-purple-500/20 bg-purple-50/50"
                         : "border-gray-200 hover:border-purple-300"
@@ -286,7 +366,7 @@ const SignUpForm = () => {
         {/* Confirm Password Field */}
         <FormField
           control={form.control}
-          name="confirmPassword"
+          name="passwordConfirm"
           render={({ field }) => (
             <FormItem className="space-y-2">
               <FormLabel className="text-sm font-medium text-gray-700 flex items-center gap-2">
@@ -298,17 +378,17 @@ const SignUpForm = () => {
                   <Input
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm your password"
-                    className={`pl-12 pr-16 py-3 border-2 rounded-xl transition-all duration-300 ${
-                      focusedField === "confirmPassword"
+                    className={`pl-12 pr-16 py-3 border-2 text-black bg-white rounded-xl transition-all duration-300 ${
+                      focusedField === "passwordConfirm"
                         ? "border-purple-500 shadow-lg shadow-purple-500/20 bg-purple-50/50"
                         : "border-gray-200 hover:border-purple-300"
-                    } ${form.formState.errors.confirmPassword ? "border-red-500" : ""}`}
-                    onFocus={() => setFocusedField("confirmPassword")}
+                    } ${form.formState.errors.passwordConfirm ? "border-red-500" : ""}`}
+                    onFocus={() => setFocusedField("passwordConfirm")}
                     {...field}
                   />
                   <Shield
                     className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors ${
-                      focusedField === "confirmPassword"
+                      focusedField === "passwordConfirm"
                         ? "text-purple-500"
                         : "text-gray-400"
                     }`}
