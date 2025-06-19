@@ -4,14 +4,6 @@ import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   Form,
   FormControl,
   FormField,
@@ -19,22 +11,30 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Link from "next/link";
-import { EyeOff, Eye } from "lucide-react";
+import {
+  EyeOff,
+  Eye,
+  User,
+  Mail,
+  Lock,
+  Shield,
+  CheckCircle,
+} from "lucide-react";
 import { useForm } from "react-hook-form";
-
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { strengthColor, strengthIndicator } from "@/lib/password-strength";
 import { useRegisterUserMutation } from "@/features/auth/authApiSlice";
 import { useRouter } from "next/navigation";
 import Spinner from "./Spinner";
+import AuthButtonAnimation from "@/animations/authButtonAAnimations";
 
 const SignUpForm = () => {
   const [level, setLevel] = useState(0);
   const [strength, setStrength] = useState({ label: "", color: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [focusedField, setFocusedField] = useState("");
 
   const router = useRouter();
 
@@ -57,6 +57,7 @@ const SignUpForm = () => {
     setLevel(temp);
     setStrength(strengthColor(temp));
   };
+
   useEffect(() => {
     changePassword("");
   }, []);
@@ -67,10 +68,10 @@ const SignUpForm = () => {
   useEffect(() => {
     if (isSuccess) {
       router.push("/");
-      const message = data?.message;
-      toast.success(message);
+      toast.success("Account created successfully! Welcome aboard! 🎉");
     }
   }, [data, isSuccess, router]);
+
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -82,188 +83,282 @@ const SignUpForm = () => {
   });
 
   const handleSubmit = async (data: SignUpFormData) => {
-    console.log(data);
-
     try {
       await registerUser(data).unwrap();
-      //create  formData for server action
-      // Create FormData for server action
-      // const formData = new FormData();
-      // formData.append("name", data.name);
-      // formData.append("email", data.email);
-      // formData.append("password", data.password);
-      // formData.append("confirmPassword", data.confirmPassword);
     } catch (error: any) {
-      const message = error.data.message;
+      const message =
+        error.data.message || "Something went wrong. Please try again.";
       toast.error(message);
     }
   };
 
+  const getStrengthColor = (level: number) => {
+    if (level <= 1) return "from-red-500 to-red-600";
+    if (level <= 2) return "from-orange-500 to-orange-600";
+    if (level <= 3) return "from-yellow-500 to-yellow-600";
+    if (level <= 4) return "from-blue-500 to-blue-600";
+    return "from-green-500 to-green-600";
+  };
+
+  const getStrengthWidth = (level: number) => {
+    return `${(level / 5) * 100}%`;
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="relative">
+          <div className="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-6 h-6 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-2xl text-center">Create Account</CardTitle>
-          <CardDescription className="text-center">
-            Sign Up Page
-          </CardDescription>
-        </CardHeader>
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)}>
-              <div className="flex flex-col gap-2"></div>
-
-              <CardContent className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Full Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter your full name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        {/* Full Name Field */}
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <User className="w-4 h-4 text-purple-500" />
+                Full Name
+              </FormLabel>
+              <FormControl>
+                <div className="relative group">
+                  <Input
+                    placeholder="Enter your full name"
+                    className={`pl-12 pr-4 py-3 border-2 rounded-xl transition-all duration-300 ${
+                      focusedField === "name"
+                        ? "border-purple-500 shadow-lg shadow-purple-500/20 bg-purple-50/50"
+                        : "border-gray-200 hover:border-purple-300"
+                    } ${form.formState.errors.name ? "border-red-500" : ""}`}
+                    onFocus={() => setFocusedField("name")}
+                    {...field}
+                  />
+                  <User
+                    className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors ${
+                      focusedField === "name"
+                        ? "text-purple-500"
+                        : "text-gray-400"
+                    }`}
+                  />
+                  {field.value && !form.formState.errors.name && (
+                    <CheckCircle className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
                   )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="your.email@example.com"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Create a password"
-                            {...field}
-                            onChange={(e) => {
-                              field.onChange(e); // Update form state
-                              changePassword(e.target.value); // Update strength indicator
-                            }}
-                          />
-                          <button
-                            type="button"
-                            onClick={handleShowHidePassword}
-                            onMouseDown={handleMouseDownPassword}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 bg-blend-hue"
-                          >
-                            {showPassword ? (
-                              <EyeOff size={18} />
-                            ) : (
-                              <Eye size={18} />
-                            )}
-                          </button>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-
-                      {/* Password strength bar */}
-                      {field.value && (
-                        <div className="mt-2">
-                          <div
-                            className="w-full h-2 rounded-full"
-                            style={{ backgroundColor: "#e0e0e0" }}
-                          >
-                            <div
-                              className="h-2 rounded-full transition-all duration-300"
-                              style={{
-                                width: `${(level / 5) * 100}%`,
-                                backgroundColor: strength.color,
-                              }}
-                            />
-                          </div>
-                          <p
-                            className="text-xs mt-1"
-                            style={{ color: strength.color }}
-                          >
-                            Strength: {strength.label}
-                          </p>
-                        </div>
-                      )}
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Create a password"
-                            {...field}
-                          />
-                          <button
-                            type="button"
-                            onClick={handleShowHideConfirmPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 bg-blend-hue"
-                          >
-                            {showPassword ? (
-                              <EyeOff size={18} />
-                            ) : (
-                              <Eye size={18} />
-                            )}
-                          </button>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-              <CardFooter className="flex flex-col space-y-4">
-                <Button
-                  type="submit"
-                  className="w-full mt-5 "
-                  disabled={form.formState.isSubmitting}
-                >
-                  {form.formState.isSubmitting
-                    ? "Creating Account..."
-                    : "Create Account"}
-                </Button>
-                <div className="text-center text-sm">
-                  Already have an account?{" "}
-                  <Link
-                    href="/auth/signin"
-                    className="text-blue-600 hover:underline"
-                  >
-                    Sign in
-                  </Link>
                 </div>
-              </CardFooter>
-            </form>
-          </Form>
-        )}
-      </Card>
-    </div>
+              </FormControl>
+              <FormMessage className="text-red-500 text-xs" />
+            </FormItem>
+          )}
+        />
+
+        {/* Email Field */}
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <Mail className="w-4 h-4 text-purple-500" />
+                Email Address
+              </FormLabel>
+              <FormControl>
+                <div className="relative group">
+                  <Input
+                    type="email"
+                    placeholder="your.email@example.com"
+                    className={`pl-12 pr-4 py-3 border-2 rounded-xl transition-all duration-300 ${
+                      focusedField === "email"
+                        ? "border-purple-500 shadow-lg shadow-purple-500/20 bg-purple-50/50"
+                        : "border-gray-200 hover:border-purple-300"
+                    } ${form.formState.errors.email ? "border-red-500" : ""}`}
+                    onFocus={() => setFocusedField("email")}
+                    {...field}
+                  />
+                  <Mail
+                    className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors ${
+                      focusedField === "email"
+                        ? "text-purple-500"
+                        : "text-gray-400"
+                    }`}
+                  />
+                  {field.value && !form.formState.errors.email && (
+                    <CheckCircle className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage className="text-red-500 text-xs" />
+            </FormItem>
+          )}
+        />
+
+        {/* Password Field */}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <Lock className="w-4 h-4 text-purple-500" />
+                Password
+              </FormLabel>
+              <FormControl>
+                <div className="relative group">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Create a strong password"
+                    className={`pl-12 pr-16 py-3 border-2 rounded-xl transition-all duration-300 ${
+                      focusedField === "password"
+                        ? "border-purple-500 shadow-lg shadow-purple-500/20 bg-purple-50/50"
+                        : "border-gray-200 hover:border-purple-300"
+                    } ${form.formState.errors.password ? "border-red-500" : ""}`}
+                    onFocus={() => setFocusedField("password")}
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      changePassword(e.target.value);
+                    }}
+                  />
+                  <Lock
+                    className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors ${
+                      focusedField === "password"
+                        ? "text-purple-500"
+                        : "text-gray-400"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleShowHidePassword}
+                    onMouseDown={handleMouseDownPassword}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4 text-gray-500" />
+                    ) : (
+                      <Eye className="w-4 h-4 text-gray-500" />
+                    )}
+                  </button>
+                </div>
+              </FormControl>
+              <FormMessage className="text-red-500 text-xs" />
+
+              {/* Enhanced Password Strength Indicator */}
+              {field.value && (
+                <div className="mt-3 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full bg-gradient-to-r ${getStrengthColor(level)} transition-all duration-500 ease-out`}
+                        style={{
+                          width: getStrengthWidth(level),
+                        }}
+                      />
+                    </div>
+                    <span className="text-xs font-medium text-gray-600">
+                      {level}/5
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Shield
+                      className="w-3 h-3"
+                      style={{ color: strength.color }}
+                    />
+                    <p
+                      className="text-xs font-medium"
+                      style={{ color: strength.color }}
+                    >
+                      Password Strength: {strength.label}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </FormItem>
+          )}
+        />
+
+        {/* Confirm Password Field */}
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <Shield className="w-4 h-4 text-purple-500" />
+                Confirm Password
+              </FormLabel>
+              <FormControl>
+                <div className="relative group">
+                  <Input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm your password"
+                    className={`pl-12 pr-16 py-3 border-2 rounded-xl transition-all duration-300 ${
+                      focusedField === "confirmPassword"
+                        ? "border-purple-500 shadow-lg shadow-purple-500/20 bg-purple-50/50"
+                        : "border-gray-200 hover:border-purple-300"
+                    } ${form.formState.errors.confirmPassword ? "border-red-500" : ""}`}
+                    onFocus={() => setFocusedField("confirmPassword")}
+                    {...field}
+                  />
+                  <Shield
+                    className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors ${
+                      focusedField === "confirmPassword"
+                        ? "text-purple-500"
+                        : "text-gray-400"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleShowHideConfirmPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="w-4 h-4 text-gray-500" />
+                    ) : (
+                      <Eye className="w-4 h-4 text-gray-500" />
+                    )}
+                  </button>
+                  {field.value && field.value === form.watch("password") && (
+                    <CheckCircle className="absolute right-12 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage className="text-red-500 text-xs" />
+            </FormItem>
+          )}
+        />
+
+        {/* Enhanced Submit Button */}
+        <div className="pt-4">
+          <AuthButtonAnimation>
+            <Button
+              type="submit"
+              disabled={form.formState.isSubmitting}
+              className="w-full h-12 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-700 hover:via-pink-700 hover:to-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            >
+              {form.formState.isSubmitting ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Creating Account...
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  Create Account
+                </div>
+              )}
+            </Button>
+          </AuthButtonAnimation>
+        </div>
+      </form>
+    </Form>
   );
 };
 
