@@ -3,7 +3,6 @@ import { FaCheckCircle } from "react-icons/fa";
 import { Lock, Mail, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
-// import { Link } from "react-router-dom"; // Commented out for demo
 
 const VerifiedPage = () => {
   useEffect(() => {
@@ -115,35 +114,6 @@ const VerifiedPage = () => {
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fade-in {
-          animation: fade-in 0.8s ease-out;
-        }
-
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-
-        .shadow-3xl {
-          box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
-        }
-      `}</style>
     </div>
   );
 };
