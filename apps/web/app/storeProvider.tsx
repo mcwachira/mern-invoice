@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { Provider } from "react-redux";
-
+import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AppStore, makeStore } from "@/lib/redux/store";
 
@@ -20,6 +20,7 @@ export default function StoreProvider({
     <Provider store={storeRef.current}>
       <ThemeProvider defaultTheme="dark" storageKey="invoice-theme">
         {children}
+        <Toaster />
       </ThemeProvider>
     </Provider>
   );
