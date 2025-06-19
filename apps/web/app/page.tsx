@@ -260,8 +260,8 @@ const Home = () => {
                 <div className="text-center">
                   <Clock className="w-12 h-12 text-emerald-400 mx-auto mb-4" />
                   <p className="text-gray-300 text-lg">
-                    "Since switching to MERN Invoice, I've reduced my billing
-                    time by 80% and improved cash flow significantly."
+                    "Since switching to MERN Invoice, I`&apos;ve reduced my
+                    billing time by 80% and improved cash flow significantly."
                   </p>
                   <p className="text-emerald-400 font-semibold mt-2">
                     - Alex Thompson, CEO
@@ -303,7 +303,7 @@ const Home = () => {
                     ))}
                   </div>
                   <p className="text-gray-300 mb-6 leading-relaxed">
-                    "{testimonial.content}"
+                    {testimonial.content}
                   </p>
                   <div>
                     <p className="text-white font-semibold">

@@ -1,5 +1,6 @@
 // features/auth/authApiSlice.ts
 import { baseApiSlice } from "../api/baseApiSlice";
+import { logOut } from "./authSlice";
 import type {
   LoginRequest,
   LoginResponse,
@@ -24,8 +25,29 @@ export const authApiSlice = baseApiSlice.injectEndpoints({
         body: credentials,
       }),
     }),
+
+    logOutUser: builder.mutation({
+      query: () => ({
+        url: "/auth/logout",
+        method: "GET",
+      }),
+
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(logOut());
+          dispatch(baseApiSlice.util.resetApiState());
+        } catch (err) {
+          console.error("Logout failed:", err);
+        }
+      },
+    }),
   }),
 });
 
 //useRegisterUserMutation this is because its a mutation
-export const { useRegisterUserMutation, useLoginUserMutation } = authApiSlice;
+export const {
+  useRegisterUserMutation,
+  useLoginUserMutation,
+  useLogOutUserMutation,
+} = authApiSlice;

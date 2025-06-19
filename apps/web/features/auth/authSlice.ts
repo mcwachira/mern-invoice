@@ -1,25 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// const user = JSON.parse(localStorage.getItem("user")!);
+// LocalStorage must not be accessed on the server
+let user = null;
 
-const user = JSON.parse(localStorage.getItem("user") ?? "null");
+if (typeof window !== "undefined") {
+  const storedUser = localStorage.getItem("user");
+  user = storedUser ? JSON.parse(storedUser) : null;
+}
 
 const initialState = {
-  user: user ? user : null,
+  user,
 };
 
-//define reducer and associated action
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     logIn: (state, action) => {
+      console.log("Logging in:", action.payload);
       state.user = action.payload;
-      localStorage.setItem("user", JSON.stringify(action.payload));
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem("user", JSON.stringify(action.payload));
+      }
     },
     logOut: (state) => {
       state.user = null;
-      localStorage.removeItem("user");
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("user");
+      }
     },
   },
 });
