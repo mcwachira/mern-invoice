@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === "development") {
   });
 } else if (process.env.NODE_ENV === "production") {
   transporter = nodemailer.createTransport({
-    // Setup for production (e.g., Mailgun, SMTP, etc.)
+    // Configure mailgun in production
     host: process.env.MAIL_HOST!,
     port: Number(process.env.MAIL_PORT!),
     auth: {

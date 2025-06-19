@@ -8,6 +8,7 @@ const initialState = {
   user: user ? user : null,
 };
 
+//define reducer and associated action
 const authSlice = createSlice({
   name: "auth",
   initialState,

@@ -14,4 +14,5 @@ export const authApiSlice = baseApiSlice.injectEndpoints({
   }),
 });
 
+//useRegisterUserMutation this is because its a mutation
 export const { useRegisterUserMutation } = authApiSlice;
