@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Mail, User, Sparkles, Shield, LogIn } from "lucide-react";
 import AuthWrapper from "@/components/AuthWrapper";
 import Link from "next/link";
+import SignInForm from "@/components/SignInPage";
 
 const LoginPage = () => {
   return (
@@ -65,7 +66,9 @@ const LoginPage = () => {
             </div>
 
             {/* Login form placeholder */}
-            <div className="space-y-6">
+
+            <SignInForm />
+            {/* <div className="space-y-6">
               <div className="space-y-4">
                 <div className="relative">
                   <input
@@ -105,7 +108,7 @@ const LoginPage = () => {
               <Button className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
                 Sign In to Account
               </Button>
-            </div>
+            </div> */}
 
             {/* Google sign in section */}
             <div className="space-y-4">

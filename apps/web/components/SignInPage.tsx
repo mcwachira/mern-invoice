@@ -18,14 +18,17 @@ import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { useLoginUserMutation } from "@/features/auth/authApiSlice";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 import Spinner from "./Spinner";
 import AuthButtonAnimation from "@/animations/authButtonAAnimations";
+import { logIn } from "@/features/auth/authSlice";
 
 const SignInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [focusedField, setFocusedField] = useState("");
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleShowHidePassword = () => {
     setShowPassword(!showPassword);
@@ -56,7 +59,9 @@ const SignInForm = () => {
 
   const handleSubmit = async (data: LoginFormData) => {
     try {
-      await loginUser(data).unwrap();
+      const getUserCredentials = await loginUser(data).unwrap();
+      console.log(getUserCredentials);
+      dispatch(logIn({ ...getUserCredentials }));
     } catch (error: any) {
       const message =
         error.data.message || "Something went wrong. Please try again.";
@@ -120,7 +125,6 @@ const SignInForm = () => {
           )}
         />
 
-        {/* Password Field */}
         {/* Password Field */}
         <FormField
           control={form.control}

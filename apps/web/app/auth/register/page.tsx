@@ -1,5 +1,4 @@
-import SignUpForm from "@/components/SignUpForm";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/features/auth/SignUpForm;
 import {
   Card,
   CardContent,
@@ -12,6 +11,7 @@ import { FaUserCheck, FaGoogle } from "react-icons/fa";
 import { Lock, Sparkles, Shield } from "lucide-react";
 import Link from "next/link";
 import AuthWrapper from "@/components/AuthWrapper";
+import SignUpForm from "@/features/auth/SignUpForm";
 
 export default function RegisterPage() {
   return (
