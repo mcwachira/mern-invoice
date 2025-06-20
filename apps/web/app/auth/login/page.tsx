@@ -97,7 +97,7 @@ const LoginPage = () => {
             <div className="text-center space-y-4">
               <div className="bg-slate-700/30 rounded-xl p-4 border border-slate-600/30">
                 <p className="text-gray-400 text-sm mb-2">
-                  Don't have an account?
+                  Don&apos;t have an account?
                 </p>
                 <Link
                   href="/auth/register"
@@ -112,7 +112,7 @@ const LoginPage = () => {
             {/* Resend verification */}
             <div className="text-center bg-slate-700/20 border border-slate-600/20 rounded-xl p-4">
               <p className="text-gray-400 text-sm mb-2">
-                Didn't receive verification email?
+                Didn&apos;t receive verification email?
               </p>
               <Link
                 href="/auth/resend"

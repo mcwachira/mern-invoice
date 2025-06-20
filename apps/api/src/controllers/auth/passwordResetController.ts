@@ -75,9 +75,10 @@ const resetPasswordRequest = asyncHandler(async (req, res) => {
 // $-auth    Public
 
 const resetPassword = asyncHandler(async (req, res) => {
-  const { password, passwordConfirm, userId } = req.body;
+  console.log(req.body);
+  const { password, passwordConfirm, userId, emailToken } = req.body;
 
-  console.log(userId);
+  console.log("userid", userId);
   if (!password) {
     res.status(400);
     throw new Error("A password is required");

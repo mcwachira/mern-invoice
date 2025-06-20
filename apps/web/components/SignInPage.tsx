@@ -19,7 +19,6 @@ import { useEffect, useState } from "react";
 import { useLoginUserMutation } from "@/features/auth/authApiSlice";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import Spinner from "./Spinner";
 import AuthButtonAnimation from "@/animations/authButtonAAnimations";
 import { logIn } from "@/features/auth/authSlice";
 
@@ -179,7 +178,7 @@ const SignInForm = () => {
           <p className="text-sm text-gray-400">
             Forgot Password?{" "}
             <Link
-              href="/reset_password_request"
+              href="/auth/password-reset"
               className="text-teal-400 hover:text-teal-300 hover:underline font-medium transition-colors"
             >
               Reset it here
