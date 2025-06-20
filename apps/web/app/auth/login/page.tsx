@@ -115,7 +115,7 @@ const LoginPage = () => {
                 Didn't receive verification email?
               </p>
               <Link
-                href="/resend"
+                href="/auth/resend"
                 className="inline-flex items-center space-x-2 text-teal-400 hover:text-teal-300 font-medium hover:underline transition-colors duration-300"
               >
                 <Mail className="w-4 h-4" />

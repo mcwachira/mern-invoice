@@ -106,7 +106,6 @@ const SignInForm = () => {
                         : "border-slate-600 hover:border-teal-500"
                     } ${form.formState.errors.email ? "border-red-500" : ""}`}
                     onFocus={() => setFocusedField("email")}
-                    onBlur={() => setFocusedField("")}
                     {...field}
                   />
                   <Mail
@@ -147,7 +146,6 @@ const SignInForm = () => {
                         : "border-slate-600 hover:border-teal-500"
                     } ${form.formState.errors.password ? "border-red-500" : ""}`}
                     onFocus={() => setFocusedField("password")}
-                    onBlur={() => setFocusedField("")}
                     {...field}
                   />
                   <Lock

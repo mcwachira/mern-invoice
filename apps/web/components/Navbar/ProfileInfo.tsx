@@ -43,7 +43,7 @@ const ProfileInfo = ({
   const handleLogout = async () => {
     try {
       await logoutUser().unwrap();
-      router.push("/login");
+      router.push("/auth/login");
     } catch (err: any) {
       toast.error(err?.message || "Logout failed");
     }

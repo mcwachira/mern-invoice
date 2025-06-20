@@ -1,5 +1,5 @@
 "use client";
-import { DollarSign, Github, Sparkles, Heart } from "lucide-react";
+import { DollarSign, Sparkles, Heart } from "lucide-react";
 import Link from "next/link";
 
 const Copyright = () => {
@@ -30,7 +30,7 @@ const Copyright = () => {
 
 const Footer = () => {
   return (
-    <footer className="relative bg-gradient-to-r from-emerald-900 via-teal-800 to-cyan-900 w-full mt-auto py-4 md:py-6 px-4 fixed bottom-0 border-t border-emerald-700/30 backdrop-blur-sm">
+    <footer className=" bg-gradient-to-r from-emerald-900 via-teal-800 to-cyan-900 w-full mt-auto py-4 md:py-6 px-4 fixed bottom-0 border-t border-emerald-700/30 backdrop-blur-sm">
       {/* Subtle animated background */}
       <div className="absolute inset-0 bg-gradient-to-r from-emerald-800/20 via-teal-700/20 to-cyan-800/20 animate-pulse"></div>
 
