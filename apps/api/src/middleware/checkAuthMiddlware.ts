@@ -39,38 +39,55 @@ const checkAuth = asynchandler(
     if (authHeader && authHeader.startsWith("Bearer")) {
       jwt_token = authHeader.split(" ")[1];
 
-      jwt.verify(
-        jwt_token,
-        process.env.JWT_ACCESS_SECRET_KEY as string,
-        async (
-          err: jwt.VerifyErrors | null,
-          decoded: string | JwtPayload | undefined,
-        ) => {
-          if (err) {
-            res.sendStatus(403);
-            return;
-          }
+      try {
+        const decoded = jwt.verify(
+          jwt_token,
+          process.env.JWT_ACCESS_SECRET_KEY as string,
+        ) as JWTPayload;
 
-          // Type assertion for decoded payload
-          const payload = decoded as JWTPayload;
-          const userId = payload.id;
+        const user = await User.findById(decoded.id).select("-password").exec();
 
-          try {
-            const user = await User.findById(userId).select("-password").exec();
+        if (!user) {
+          res.sendStatus(404);
+          return;
+        }
 
-            if (!user) {
-              res.sendStatus(404);
-              return;
-            }
+        req.user = user;
+        req.roles = decoded.roles;
+        next();
+      } catch (err) {
+        res.sendStatus(403); // Token invalid or expired
+      }
+      // jwt.verify(
+      //   jwt_token,
+      //   process.env.JWT_ACCESS_SECRET_KEY as string,
+      //   async (
+      //     err: jwt.VerifyErrors | null,
+      //     decoded: string | JwtPayload | undefined,
+      //   ) => {
+      //     if (err) {
+      //       res.sendStatus(403);
+      //       return;
+      //     }
 
-            req.user = user;
-            req.roles = payload.roles;
-            next();
-          } catch (error) {
-            res.sendStatus(500);
-          }
-        },
-      );
+      // Type assertion for decoded payload
+      // const payload = decoded as JWTPayload;
+      // const userId = payload.id;
+
+      // try {
+      //   const user = await User.findById(userId).select("-password").exec();
+
+      //   if (!user) {
+      //     res.sendStatus(404);
+      //     return;
+      //   }
+
+      //   req.user = user;
+      //   req.roles = payload.roles;
+      //   next();
+      // } catch (error) {
+      //   res.sendStatus(500);
+      // }
     }
   },
 );

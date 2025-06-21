@@ -14,7 +14,7 @@ const createCustomer = asyncHandler(async (req: Request, res: Response) => {
     res.status(400);
 
     throw new Error(
-      "a Customer must have atleas an email, name, and phone numer",
+      "a Customer must have atleast an email, name, and phone numer",
     );
   }
 
@@ -45,12 +45,11 @@ const createCustomer = asyncHandler(async (req: Request, res: Response) => {
   if (!createCustomer) {
     res.status(400);
     throw new Error("Customer could not be created");
-
-    res.status(200).json({
-      success: true,
-      message: `Your Customer named: ${createdCustomer.name}, was created successfully`,
-    });
   }
+  res.status(200).json({
+    success: true,
+    message: `Your Customer named: ${createdCustomer.name}, was created successfully`,
+  });
 });
 
 export default createCustomer;
