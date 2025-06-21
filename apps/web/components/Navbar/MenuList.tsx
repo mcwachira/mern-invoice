@@ -1,6 +1,5 @@
-// MenuList.tsx - Enhanced Menu List
 "use client";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserCog, BarChart, FileText, Users, ShieldCheck } from "lucide-react";
 import useAuthUser from "@/hooks/useAuthUserHooks";
@@ -30,7 +29,6 @@ const menuItems = [
 ];
 
 const MenuList = ({ expanded = false }: { expanded?: boolean }) => {
-  const router = useRouter();
   const pathname = usePathname();
   const { isAdmin } = useAuthUser();
 
@@ -53,11 +51,11 @@ const MenuList = ({ expanded = false }: { expanded?: boolean }) => {
         const isActive = pathname === item.path;
 
         return (
-          <button
+          <Link
             key={item.path}
-            onClick={() => router.push(item.path)}
+            href={item.path}
             className={cn(
-              "w-full flex items-center rounded-xl text-left transition-all duration-200 group relative",
+              "relative w-full flex items-center rounded-xl text-left transition-all duration-200 group",
               expanded ? "space-x-3 px-3 py-2.5" : "justify-center p-2.5",
               isActive
                 ? "bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-lg shadow-teal-500/25"
@@ -103,11 +101,11 @@ const MenuList = ({ expanded = false }: { expanded?: boolean }) => {
               </div>
             )}
 
-            {/* Hover effect */}
+            {/* Hover background effect */}
             {!isActive && (
               <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-teal-500/0 to-emerald-500/0 group-hover:from-teal-500/10 group-hover:to-emerald-500/10 transition-all duration-200" />
             )}
-          </button>
+          </Link>
         );
       })}
     </nav>

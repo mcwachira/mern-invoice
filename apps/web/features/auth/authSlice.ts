@@ -1,15 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { decodeToken } from "react-jwt";
 
 // LocalStorage must not be accessed on the server
 let user = null;
+let googleToken;
 
 if (typeof window !== "undefined") {
   const storedUser = localStorage.getItem("user");
   user = storedUser ? JSON.parse(storedUser) : null;
 }
 
+if (typeof window !== "undefined") {
+  googleToken = localStorage.getItem("googleToken");
+}
+
+const decodedToken = googleToken ? decodeToken(googleToken) : null;
+
 const initialState = {
-  user,
+  user: user ? user : decodedToken,
+  googleToken: googleToken ? googleToken : null,
 };
 
 const authSlice = createSlice({
@@ -26,8 +35,10 @@ const authSlice = createSlice({
     },
     logOut: (state) => {
       state.user = null;
+      state.googleToken = null;
       if (typeof window !== "undefined") {
         localStorage.removeItem("user");
+        localStorage.removeItem("googleToken");
       }
     },
   },
@@ -38,3 +49,6 @@ export default authSlice.reducer;
 
 export const selectCurrentUserToken = (state: any) =>
   state.auth.user?.accessToken;
+
+export const selectCurrentUserGoogleToken = (state: any) =>
+  state.auth.user?.googleToken;

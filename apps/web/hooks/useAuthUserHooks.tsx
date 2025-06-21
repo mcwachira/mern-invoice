@@ -2,7 +2,10 @@
 
 import { decodeToken } from "react-jwt";
 import { useSelector } from "react-redux";
-import { selectCurrentUserToken } from "../features/auth/authSlice";
+import {
+  selectCurrentUserToken,
+  selectCurrentUserGoogleToken,
+} from "../features/auth/authSlice";
 
 // Define the expected shape of your decoded token
 interface DecodedToken {
@@ -12,6 +15,7 @@ interface DecodedToken {
 
 const useAuthUser = () => {
   const token = useSelector(selectCurrentUserToken);
+  const googleToken = useSelector(selectCurrentUserGoogleToken);
 
   let isAdmin = false;
   let accessRight: "User" | "Admin" = "User";
@@ -25,6 +29,13 @@ const useAuthUser = () => {
       if (isAdmin) accessRight = "Admin";
 
       return { roles, isAdmin, accessRight };
+    } else if (googleToken) {
+      const gDecodedToken = decodeToken(googleToken);
+      const { roles } = gDecodedToken;
+      isAdmin = roles.includes("Admin");
+      if (isAdmin) accessRight = "Admin";
+
+      return { roles: [], isAdmin, accessRight };
     }
   }
 

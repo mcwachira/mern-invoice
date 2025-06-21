@@ -10,6 +10,8 @@ import { errorHandler, notFound } from "./middleware/errorMiddleware";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import { apiLimiter } from "./middleware/apiLimiter";
+import passport from "passport";
+import googleAuth from "./config/passportSetup";
 // import expressMongoSanitize from "@exortek/express-mongo-sanitize";
 
 (async () => {
@@ -27,6 +29,9 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(passport.initialize());
+googleAuth();
 
 app.use(cookieParser());
 

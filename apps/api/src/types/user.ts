@@ -35,3 +35,11 @@ export interface IUserDocument extends IUser, Document {
 // }
 // User model interface
 export interface IUserModel extends Model<IUserDocument> {}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: IUserDocument; // Directly specify the type of req.user
+    }
+  }
+}

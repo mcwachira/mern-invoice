@@ -10,7 +10,9 @@ const userSchema = new Schema<IUserDocument, IUserModel>(
       type: String,
       lowercase: true,
       unique: true,
-      required: true,
+      required: function () {
+        return this.provider === "email";
+      },
       validate: [validator.isEmail, "Please provide a valid email"],
     },
     username: {
@@ -52,18 +54,26 @@ const userSchema = new Schema<IUserDocument, IUserModel>(
     },
     password: {
       type: String,
-      required: true,
+      required: function () {
+        return this.provider === "email";
+      },
       select: false,
       validate: [
-        validator.isStrongPassword,
-        "Password must be at least 8 characters long, with uppercase, lowercase letters, and a symbol",
+        {
+          validator(this: IUserDocument, value: string) {
+            if (this.provider !== "email") return true;
+            return validator.isStrongPassword(value);
+          },
+          message:
+            "Password must be at least 8 characters long, with uppercase, lowercase letters, and a symbol",
+        },
       ],
     },
     passwordConfirm: {
       type: String,
       validate: {
         validator(this: IUserDocument, value: string) {
-          // 'this' here is IUserDocument, but validator ignores typing, so safe to leave as function(value)
+          if (this.provider !== "email") return true;
           return value === this.password;
         },
         message: "Passwords do not match",

@@ -39,10 +39,10 @@ const AuthNav = () => {
   useEffect(() => {
     if (googleToken && isExpired(googleToken)) {
       dispatch(logOut());
-      router.push("/login");
+      router.push("/auth/login");
       toast.warning("Your session has expired, login again");
     }
-  }, [googleToken]);
+  }, [dispatch, router, googleToken]);
 
   return (
     <>

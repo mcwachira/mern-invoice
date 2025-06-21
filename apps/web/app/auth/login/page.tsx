@@ -2,10 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
-import { Mail, User, Sparkles, Shield, LogIn, Chrome } from "lucide-react";
+import { Mail, User, Sparkles, Shield, LogIn } from "lucide-react";
 import AuthWrapper from "@/components/AuthWrapper";
 import Link from "next/link";
 import SignInForm from "@/components/SignInPage";
+import GoogleLogin from "@/components/GoogleLogin";
 
 const LoginPage = () => {
   return (
@@ -81,13 +82,7 @@ const LoginPage = () => {
 
             {/* Google sign in section */}
             <div className="space-y-4">
-              <Button
-                variant="outline"
-                className="w-full border-2 border-slate-600 hover:border-teal-500 hover:bg-slate-700/50 py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] text-gray-300 hover:text-white bg-slate-800/50"
-              >
-                <Chrome className="w-5 h-5 mr-3 text-teal-400" />
-                <span className="font-medium">Continue with Google</span>
-              </Button>
+              <GoogleLogin />
             </div>
 
             {/* Divider */}

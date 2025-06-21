@@ -3,8 +3,10 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
-  const role = request.cookies.get("role")?.value; // assuming role is set in cookies
+  // const token = request.cookies.get("token")?.value;
+  // console.log(token);
+  // const role = request.cookies.get("role")?.value; // assuming role is set in cookies
+  // console.log(role);
 
   const url = request.nextUrl;
 
