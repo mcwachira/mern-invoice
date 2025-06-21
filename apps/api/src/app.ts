@@ -14,6 +14,8 @@ import passport from "passport";
 import googleAuth from "./config/passportSetup";
 import customerRoutes from "./routes/customerRoutes";
 import documentRoutes from "./routes/documentRoutes";
+import path from "path";
+import uploadRoutes from "./routes/uploadRoutes";
 // import expressMongoSanitize from "@exortek/express-mongo-sanitize";
 
 (async () => {
@@ -21,6 +23,9 @@ import documentRoutes from "./routes/documentRoutes";
 })();
 const app = express();
 const PORT = process.env.PORT;
+
+const _dirname = path.resolve();
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 const domainURL = process.env.DOMAIN;
 console.log(domainURL);
@@ -51,6 +56,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", apiLimiter, userRoutes);
 app.use("/api/v1/customer", apiLimiter, customerRoutes);
 app.use("/api/v1/document", apiLimiter, documentRoutes);
+app.use("/api/v1/upload", apiLimiter, uploadRoutes);
 
 app.use(notFound); // 404 middleware
 app.use(errorHandler); // error handler (must be last)
