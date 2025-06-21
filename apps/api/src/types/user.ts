@@ -1,4 +1,4 @@
-import { Document, Model } from "mongoose";
+import { Document, Model, Types } from "mongoose";
 
 // Base user interface (without Mongoose-specific fields)
 export interface IUser {
@@ -27,6 +27,7 @@ export interface IUser {
 
 // User document interface (extends Mongoose Document)
 export interface IUserDocument extends IUser, Document {
+  _id: Types.ObjectId;
   comparePassword(givenPassword: string): Promise<boolean>;
 }
 

@@ -12,6 +12,8 @@ import userRoutes from "./routes/userRoutes";
 import { apiLimiter } from "./middleware/apiLimiter";
 import passport from "passport";
 import googleAuth from "./config/passportSetup";
+import customerRoutes from "./routes/customerRoutes";
+import documentRoutes from "./routes/documentRoutes";
 // import expressMongoSanitize from "@exortek/express-mongo-sanitize";
 
 (async () => {
@@ -47,6 +49,8 @@ app.get("/api/v1/make", (req, res) => {
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", apiLimiter, userRoutes);
+app.use("/api/v1/customer", apiLimiter, customerRoutes);
+app.use("/api/v1/document", apiLimiter, documentRoutes);
 
 app.use(notFound); // 404 middleware
 app.use(errorHandler); // error handler (must be last)

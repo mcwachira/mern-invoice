@@ -1,12 +1,12 @@
 import asyncHandler from "express-async-handler";
-import Customer from "../../models/customerModel";
+import Document from "../../models/documentModel";
 import { Request, Response } from "express";
 
-// $-title   Get All  Customers
-// $-path    Get /api/v1/customer/
+// $-title   Get All  User Documents
+// $-path    Get /api/v1/document/
 // $-auth    Private
 
-const getAllUserCustomers = asyncHandler(
+const getAllUserDocuments = asyncHandler(
   async (req: Request, res: Response) => {
     if (!req.user) {
       res.status(401);
@@ -15,9 +15,9 @@ const getAllUserCustomers = asyncHandler(
 
     const pageSize = 10;
     const page = Number(req.query.page) || 1;
-    const count = await Customer.countDocuments({ createdBy: req.user._id });
+    const count = await Document.countDocuments({ createdBy: req.user._id });
 
-    const customers = await Customer.find({
+    const documents = await Document.find({
       createdBy: req.user._id,
     })
       .sort({
@@ -29,11 +29,11 @@ const getAllUserCustomers = asyncHandler(
 
     res.json({
       success: true,
-      totlaCustomers: count,
+      totlaDocuments: count,
       numberOfPages: Math.ceil(count / pageSize),
-      myCustomers: customers,
+      myDocuments: documents,
     });
   },
 );
 
-export default getAllUserCustomers;
+export default getAllUserDocuments;
