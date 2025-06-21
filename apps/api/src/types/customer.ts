@@ -1,4 +1,5 @@
 import { Document, Types } from "mongoose";
+import { IUserDocument } from "./user";
 
 export interface ICustomer extends Document {
   createdBy: Types.ObjectId;
@@ -12,4 +13,12 @@ export interface ICustomer extends Document {
   phoneNumber: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: IUserDocument; // Or more specifically if you have a type like IUser
+    }
+  }
 }
