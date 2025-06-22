@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  // const token = request.cookies.get("token")?.value;
-  // console.log(token);
-  // const role = request.cookies.get("role")?.value; // assuming role is set in cookies
-  // console.log(role);
+  const token = request.cookies.get("token")?.value;
+  console.log(token);
+  const role = request.cookies.get("role")?.value; // assuming role is set in cookies
+  console.log(role);
 
   const url = request.nextUrl;
 
@@ -40,10 +40,10 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/documents/:path*",
-    "/profile/:path*",
-    "/customers/:path*",
-    "/admin/:path*",
+    // "/dashboard/:path*",
+    // "/documents/:path*",
+    // "/profile/:path*",
+    // "/customers/:path*",
+    // "/admin/:path*",
   ], // paths to protect
 };
